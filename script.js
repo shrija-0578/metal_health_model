@@ -1,7 +1,32 @@
-document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+// Handle stress level pill selection
+const pillButtons = document.querySelectorAll('.pill-btn');
+const stressLevelInput = document.getElementById('stress_level');
+
+pillButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        pillButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        stressLevelInput.value = button.getAttribute('data-value');
+    });
+});
+
+// Handle form submission and view state switching
+const form = document.getElementById('prediction-form');
+const initialState = document.getElementById('initial-state');
+const loadingState = document.getElementById('loading-state');
+const successState = document.getElementById('success-state');
+const scoreValueElem = document.getElementById('score-value');
+const signalStrengthElem = document.getElementById('signal-strength');
+const resetBtn = document.getElementById('reset-btn');
+
+form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Map input fields to match StudentData model in FastAPI
+    // Switch to loading state
+    initialState.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+    successState.classList.add('hidden');
+
     const payload = {
         age: parseInt(document.getElementById('age').value),
         gender: document.getElementById('gender').value,
@@ -14,14 +39,8 @@ document.getElementById('prediction-form').addEventListener('submit', async func
         study_hours: parseFloat(document.getElementById('study_hours').value),
         physical_activity_hours: parseFloat(document.getElementById('physical_activity_hours').value),
         sleep_hours_per_night: parseFloat(document.getElementById('sleep_hours_per_night').value),
-        stress_level: document.getElementById('stress_level').value
+        stress_level: stressLevelInput.value
     };
-
-    const resultBox = document.getElementById('result-container');
-    const placeholderText = document.querySelector('.placeholder-text');
-    const scoreDisplay = document.getElementById('score-display');
-    const scoreValueElem = document.getElementById('score-value');
-    const scoreCategoryElem = document.getElementById('score-category');
 
     try {
         const response = await fetch('http://localhost:8000/predict', {
@@ -33,43 +52,46 @@ document.getElementById('prediction-form').addEventListener('submit', async func
         });
 
         if (!response.ok) {
-            throw new Error('Failed to retrieve prediction.');
+            throw new Error('Prediction API failed');
         }
 
         const result = await response.json();
-        const score = result.predicted_mental_health_score;
+        const score = Number(result.predicted_mental_health_score).toFixed(2);
 
-        // Display score
-        placeholderText.classList.add('hidden');
-        scoreDisplay.classList.remove('hidden');
-        scoreValueElem.textContent = score;
+        setTimeout(() => {
+            loadingState.classList.add('hidden');
+            successState.classList.remove('hidden');
+            scoreValueElem.textContent = score;
 
-        // Clear previous color states
-        resultBox.classList.remove('green', 'orange', 'yellow', 'red', 'neutral');
+            // Clear previous color classes from the score value
+            scoreValueElem.classList.remove('score-green', 'score-orange', 'score-yellow', 'score-red');
 
-        // Color coding logic based on score thresholds (adjust range boundaries as per your target metric)
-        let category = '';
-        let colorClass = '';
-
-        if (score >= 7.5) {
-            category = 'Good';
-            colorClass = 'green';
-        } else if (score >= 5.0) {
-            category = 'Average';
-            colorClass = 'orange';
-        } else if (score >= 2.5) {
-            category = 'Below Average';
-            colorClass = 'yellow';
-        } else {
-            category = 'Poor';
-            colorClass = 'red';
-        }
-
-        scoreCategoryElem.textContent = `Status: ${category}`;
-        resultBox.classList.add(colorClass);
+            // Apply color coding and category message based on thresholds
+            if (score >= 7.5) {
+                signalStrengthElem.textContent = "Good";
+                scoreValueElem.classList.add('score-green');
+            } else if (score >= 5.5) {
+                signalStrengthElem.textContent = "Average";
+                scoreValueElem.classList.add('score-orange');
+            } else if (score >= 3.5) {
+                signalStrengthElem.textContent = "Below Average";
+                scoreValueElem.classList.add('score-yellow');
+            } else {
+                signalStrengthElem.textContent = "Poor";
+                scoreValueElem.classList.add('score-red');
+            }
+        }, 600);
 
     } catch (error) {
-        console.error('Error connecting to API:', error);
-        alert('Could not connect to the backend server. Ensure FastAPI is running at http://localhost:8000');
+        console.error('Backend connection error:', error);
+        alert('Could not connect to FastAPI server at http://localhost:8000. Make sure uvicorn is running.');
+        loadingState.classList.add('hidden');
+        initialState.classList.remove('hidden');
     }
+});
+
+// Reset view on "Run another read" click
+resetBtn.addEventListener('click', () => {
+    successState.classList.add('hidden');
+    initialState.classList.remove('hidden');
 });
