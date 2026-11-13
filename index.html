@@ -3,130 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Score Predictor</title>
+    <title>Mental Health Signal Predictor</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Left Section: Input  -->
-        <div class="section form-section">
-            <h2>Mental Health Assessment</h2>
+        <!-- Left Section: Input Form -->
+        <div class="form-section">
             <form id="prediction-form">
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" id="age" name="age" min="0" max="100" placeholder="age" >
+                <!-- Section 01: Demographics -->
+                <div class="section-header">
+                    <span class="step-badge">01</span>
+                    <span class="step-title">Demographics</span>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" min="10" max="100" required value="22">
+                        <small class="field-hint">10–100</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" required>
+                            <option value="India">India</option>
+                            <option value="USA">USA</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                            <option value="UK">UK</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <small class="field-hint">Not listed? Type it anyway.</small>
+                    </div>
+                </div>
+
+                <!-- Section 02: Academic & Digital Habits -->
+                <div class="section-header">
+                    <span class="step-badge">02</span>
+                    <span class="step-title">Academic & Digital Habits</span>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="academic_level">Academic level</label>
+                        <select id="academic_level" name="academic_level" required>
+                            <option value="High School">High School</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Graduate" selected>Graduate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="most_used_platform">Most-used platform</label>
+                        <select id="most_used_platform" name="most_used_platform" required>
+                            <option value="YouTube" selected>YouTube</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Twitter">Twitter</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="purpose_of_use">Primary purpose</label>
+                        <select id="purpose_of_use" name="purpose_of_use" required>
+                            <option value="Entertainment" selected>Entertainment</option>
+                            <option value="Education">Education</option>
+                            <option value="Networking">Networking</option>
+                            <option value="News">News</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="avg_daily_usage_hours">Avg. daily screen time</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.5" required value="2">
+                            <span class="unit-label">hrs</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender" name="gender" placeholder="Select Gender" required>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
+                    <label for="daily_unlocks">Daily phone unlocks</label>
+                    <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" required value="50">
+                </div>
+
+                <!-- Section 03: Lifestyle & Stress -->
+                <div class="section-header">
+                    <span class="step-badge">03</span>
+                    <span class="step-title">Lifestyle & Stress</span>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="study_hours">Study hours / day</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.5" required value="2">
+                            <span class="unit-label">hrs</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="physical_activity_hours">Physical activity / day</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.5" required value="0">
+                            <span class="unit-label">hrs</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep_hours_per_night">Sleep / night</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.5" required value="6">
+                            <span class="unit-label">hrs</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="country">Country</label>
-                    <select id="country" name="country" required>
-                        <option value="India">India</option>
-                        <option value="USA">USA</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Australia">Australia</option>
-                        <option value="UK">UK</option>
-                        <option value="Germany">Germany</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="France">France</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <label>Perceived stress level</label>
+                    <div class="pill-group" id="stress-level-group">
+                        <button type="button" class="pill-btn" data-value="Low">Low</button>
+                        <button type="button" class="pill-btn active" data-value="Medium">Medium</button>
+                        <button type="button" class="pill-btn" data-value="High">High</button>
+                        <button type="button" class="pill-btn" data-value="Very High">Very High</button>
+                    </div>
+                    <input type="hidden" id="stress_level" name="stress_level" value="Medium">
                 </div>
 
-                <div class="form-group">
-                    <label for="academic_level">Academic Level</label>
-                    <select id="academic_level" name="academic_level" required>
-                        <option value="High School">High School</option>
-                        <option value="Undergraduate" selected>Undergraduate</option>
-                        <option value="Graduate">Graduate</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="most_used_platform">Most Used Platform</label>
-                    <select id="most_used_platform" name="most_used_platform" required>
-                        <option value="Instagram">Instagram</option>
-                        <option value="YouTube">YouTube</option>
-                        <option value="WhatsApp">WhatsApp</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="Snapchat">Snapchat</option>
-                        <option value="Twitter">Twitter</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="LINE">LINE</option>
-                        <option value="KakaoTalk">KakaoTalk</option>
-                        <option value="VKontakte">VKontakte</option>
-                        <option value="WeChat">WeChat</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="purpose_of_use">Purpose of Use</label>
-                    <select id="purpose_of_use" name="purpose_of_use" required>
-                        <option value="Networking">Networking</option>
-                        <option value="Education">Education</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="News">News</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="avg_daily_usage_hours">Avg Daily Usage Hours (0-24)</label>
-                    <input type="number" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.1" required value="4.5">
-                </div>
-
-                <div class="form-group">
-                    <label for="daily_unlocks">Daily Unlocks</label>
-                    <input type="number" id="daily_unlocks" name="daily_unlocks" min="0"placeholder="value" required >
-                </div>
-
-                <div class="form-group">
-                    <label for="study_hours">Study Hours (0-24)</label>
-                    <input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.1" placeholder="value" required >
-                </div>
-
-                <div class="form-group">
-                    <label for="physical_activity_hours">Physical Activity Hours (0-24)</label>
-                    <input type="number" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.1" placeholder="value" required >
-                </div>
-
-                <div class="form-group">
-                    <label for="sleep_hours_per_night">Sleep Hours Per Night (0-24)</label>
-                    <input type="number" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.1" placeholder="value" required >
-                </div>
-
-                <div class="form-group">
-                    <label for="stress_level">Stress Level</label>
-                    <select id="stress_level" name="stress_level" required>
-                        <option value="Low">Low</option>
-                        <option value="Medium" selected>Medium</option>
-                        <option value="High">High</option>
-                        <option value="Very High">Very High</option>
-                    </select>
-                </div>
-
-                <button type="submit" id="submit-btn">Predict Score</button>
+                <button type="submit" id="submit-btn" class="read-signal-btn">Find Score</button>
             </form>
         </div>
 
-        <!-- Right Section: Predicted Score Display -->
-        <div class="section result-section">
-            <h2>Prediction Result</h2>
-            <div id="result-container" class="result-box neutral">
-                <p class="placeholder-text">Fill out the form and click "Predict Score" to view results.</p>
-                <div id="score-display" class="hidden">
-                    <span class="score-label">Predicted Mental Health Score</span>
-                    <h1 id="score-value">--</h1>
-                    <p id="score-category" class="score-category"></p>
+        <!-- Right Section: Dark Green Output Panel -->
+        <div class="result-section">
+            <div id="initial-state" class="result-content">
+                <div class="gauge-graphic top-arc"></div>
+                <h3 class="result-heading">Your score will appear here</h3>
+                <p class="result-subtext">Fill in the form and submit to generate a predicted mental health score from 0–10.</p>
+            </div>
+
+            <div id="loading-state" class="result-content hidden">
+                <div class="gauge-graphic middle-rings">
+                    <div class="ring-circle"></div>
                 </div>
+                <h3 class="result-heading">Reading the signal...</h3>
+                <p class="result-subtext">Running your habits through the model.</p>
+            </div>
+
+            <div id="success-state" class="result-content hidden">
+                <!-- <div class="gauge-graphic bottom-gauge">
+                    <div class="gauge-arc"></div>
+                    <div class="gauge-dot"></div>
+                </div> -->
+                <div class="score-display-box">
+                    <span id="score-value"></span><span class="score-max">/10</span>
+                </div>
+                <h3 id="signal-strength" class="signal-title"></h3>
+                <button type="button" id="reset-btn" class="run-another-btn">Run another read</button>
             </div>
         </div>
     </div>
