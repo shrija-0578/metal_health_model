@@ -51,13 +51,13 @@ document.getElementById('prediction-form').addEventListener('submit', async func
         let category = '';
         let colorClass = '';
 
-        if (score >= 75) {
+        if (score >= 7.5) {
             category = 'Good';
             colorClass = 'green';
-        } else if (score >= 50) {
+        } else if (score >= 5.0) {
             category = 'Average';
             colorClass = 'orange';
-        } else if (score >= 25) {
+        } else if (score >= 2.5) {
             category = 'Below Average';
             colorClass = 'yellow';
         } else {
